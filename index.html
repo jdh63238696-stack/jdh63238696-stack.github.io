@@ -2323,6 +2323,7 @@ body.modal-open{overflow:hidden}
       return res.json();
     })
     .then(function (data) {
+      if (statusEl) statusEl.textContent = '진단1 ' + (Array.isArray(data) ? data.length : 'notarray');
       if (!Array.isArray(data)) data = [];
       posts = data.filter(function (p) {
         return p && (p.title || p.id);
@@ -2330,6 +2331,7 @@ body.modal-open{overflow:hidden}
         return String(b.date || '').localeCompare(String(a.date || ''));
       });
       if (!posts.length) { showEmpty(); return; }
+      if (statusEl) statusEl.textContent = '진단2 ' + posts.length;
       renderList(posts.slice(0, 3));
       if (statusEl) {
         statusEl.textContent = posts.length > 3
@@ -2337,7 +2339,7 @@ body.modal-open{overflow:hidden}
           : '최근 ' + posts.length + '건';
       }
     })
-    .catch(function () { showEmpty(); });
+    .catch(function (err) { showEmpty(); if (statusEl) statusEl.textContent = '진단E ' + (err && (err.name + ': ' + err.message)); });
 })();
 </script>
 <script>
