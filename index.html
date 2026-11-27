@@ -1814,6 +1814,10 @@ ul,ol{padding:0;list-style:none}
     var ok = true;
     var firstInvalid = null;
 
+    var areaEl = form.elements['area'];
+    if (!areaEl.value) { setError('area', '상담 분야를 선택해 주세요.'); ok = false; firstInvalid = firstInvalid || areaEl; }
+    else setError('area', '');
+
     var nameEl = form.elements['name'];
     if (!nameEl.value.trim()) { setError('name', '이름을 입력해 주세요.'); ok = false; firstInvalid = firstInvalid || nameEl; }
     else setError('name', '');
@@ -1825,10 +1829,6 @@ ul,ol{padding:0;list-style:none}
       setError('phone', '연락처를 숫자로 정확히 입력해 주세요. (예: 010-1234-5678)');
       ok = false; firstInvalid = firstInvalid || phoneEl;
     } else setError('phone', '');
-
-    var areaEl = form.elements['area'];
-    if (!areaEl.value) { setError('area', '상담 분야를 선택해 주세요.'); ok = false; firstInvalid = firstInvalid || areaEl; }
-    else setError('area', '');
 
     var agreeEl = form.elements['agree'];
     if (!agreeEl.checked) {
