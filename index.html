@@ -2241,7 +2241,7 @@ body.modal-open{overflow:hidden}
     if (post.content && String(post.content).trim()) {
       renderRich(body, post.content);
     } else {
-      body.appendChild(make('p', 'pm-note', '이 글의 전문은 네이버 블로그 원문에서 이어집니다. 아래 링크에서 확인하실 수 있습니다.');
+      body.appendChild(make('p', 'pm-note', '이 글의 전문은 네이버 블로그 원문에서 이어집니다. 아래 링크에서 확인하실 수 있습니다.'));
     }
 
     var link = doc.getElementById('pm-link');
@@ -2296,7 +2296,7 @@ body.modal-open{overflow:hidden}
 
       var foot = make('span', 'post-foot');
       foot.appendChild(make('span', 'post-case', post.caseNumber || '예규·판례 검토'));
-      var read = make('span', 'post-read', '전문 읽기');
+      var read = make('span', 'post-read', (post.content && String(post.content).trim()) ? '전문 읽기' : '자세히 보기');
       read.insertAdjacentHTML('beforeend', '<svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false"><path d="M4 8h8M8.5 4.5 12 8l-3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>');
       foot.appendChild(read);
       card.appendChild(foot);
@@ -2323,7 +2323,6 @@ body.modal-open{overflow:hidden}
       return res.json();
     })
     .then(function (data) {
-      if (statusEl) statusEl.textContent = '진단1 ' + (Array.isArray(data) ? data.length : 'notarray');
       if (!Array.isArray(data)) data = [];
       posts = data.filter(function (p) {
         return p && (p.title || p.id);
@@ -2331,7 +2330,6 @@ body.modal-open{overflow:hidden}
         return String(b.date || '').localeCompare(String(a.date || ''));
       });
       if (!posts.length) { showEmpty(); return; }
-      if (statusEl) statusEl.textContent = '진단2 ' + posts.length;
       renderList(posts.slice(0, 3));
       if (statusEl) {
         statusEl.textContent = posts.length > 3
@@ -2339,7 +2337,7 @@ body.modal-open{overflow:hidden}
           : '최근 ' + posts.length + '건';
       }
     })
-    .catch(function (err) { showEmpty(); if (statusEl) statusEl.textContent = '진단E ' + (err && (err.name + ': ' + err.message)); });
+    .catch(function () { showEmpty(); });
 })();
 </script>
 <script>
